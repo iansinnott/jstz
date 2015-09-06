@@ -5,6 +5,9 @@
     "./dist/jstz.js"
   ],
   "description": "Timezone detection for JavaScript",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
   "author": {
     "name": "Ian Sinnott",
     "email": "ian@iansinnott.com",
