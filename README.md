@@ -39,7 +39,7 @@ timezone.name(); // => 'America/Los_Angeles' (or whatever your user's timezone i
   var jstz = require('jstz');
   var timezone = jstz.determine();
   console.log('Your timezone is: ' + timezone.name());
-<script>
+</script>
 ```
 
 ## Docs
