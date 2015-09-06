@@ -1,44 +1,56 @@
-## Introduction
+# JSTZ
 
-This script gives you the zone info key representing your device's time zone setting. 
+Timezone detection for JavaScript
 
-The return value is an [IANA zone info key][1] (aka the Olson time zone database).
+## What
 
-The IANA timezone database is pretty much standard for most platforms (UNIX and Mac support it natively, and every programming language in the world either has native support or well maintained libraries that support it).
+This library allows you to detect a user's timezone from within their browser. It is often useful to use JSTZ in combination with a timezone parsing library such as [Moment Timezone][].
 
-## Example Use
+This library is an unofficial fork of [pellepim/jstimezonedetect][jstimezonedetect]. The original library works well and can be used via [CDN][], but it was not configured to work with NPM. This meant the library was less accessible because it could not be retrieved with a simple npm command or included as a dependency in `package.json`. Thus this fork was born.
 
-Since version 1.0.4 the [library is hosted on cdnjs.com][10]. I strongly recommend including it from there.
+**Sidenote:** If you're wondering why this isn't an actual GitHub fork it's because the original project uses Mercurial and is hosted on BitBucket.
 
-Invoke the script by calling
+## Why
 
-    :::javascript
-        var tz = jstz.determine(); // Determines the time zone of the browser client
-        tz.name(); // Returns the name of the time zone eg "Europe/Berlin"
+Dealing with timezones can be a pain. Libraries like [Moment Timezone][] help a lot with the parsing side of things, but if you want to _detect_ the users timezone you would normally have to do it manually. That's where this library comes in.
 
-## Use Case
+## Usage
 
-The script is useful if you do not want to disturb your users with questions about what time zone they are in. You can rely on this script to give you a key that is usable for server side datetime normalisations across time zones. 
+```js
+import jstz from 'jstz';
+const timezone = jstz.determine();
+timezone.name(); // => 'America/Los_Angeles' (or whatever your user's timezone is)
+```
 
-## Limitations
+Or if you prefer ES5:
 
-This script does not do geo-location, nor does it care very much about historical time zones. 
+```js
+var jstz = require('jstz');
+var timezone = jstz.determine();
+timezone.name(); // => 'America/Los_Angeles' (or whatever your user's timezone is)
+```
 
-So if you are unhappy with the time zone "Europe/Berlin" when the user is in fact in "Europe/Stockholm" - this script is not for you. (They are both identical in modern time).
+**Note:** If you're not using a module system such as Webpack or Browserify then I recommend you use the original library delivered via CDNJS:
 
-Also, if it is important to you to know that in Europe/Simferopool (Ukraine) the UTC offset before 1924 was +2.67, sorry, this script will not help you.
+```html
+<!doctype html>
+<script src='https://cdnjs.com/libraries/jstimezonedetect'></script>
+<script>
+  var jstz = require('jstz');
+  var timezone = jstz.determine();
+  console.log('Your timezone is: ' + timezone.name());
+<script>
+```
 
-Time zones are a screwed up thing, generally speaking, and the scope of this script is to solve problems concerning modern time zones, in this case from 2010 and forward.
+## Docs
+
+To learn more about the library head on over to the original libraries website: <http://pellepim.bitbucket.org/jstz/>
 
 ## Demo
 
-There is an updated demo running on: [http://pellepim.bitbucket.org/jstz/][2].
+<http://pellepim.bitbucket.org/jstz/>
 
-## Contribute?
-
-If you want to contribute to the project (perhaps fix a bug, or reflect a change in time zone rules), please simply issue a Pull Request. Don't worry about [Grunt][4] builds etc, all you need to modify is the main.js file and I'll take care of the testing/minifying etc.
-
-## Credits
+## Credits (from the original README.md)
 
 Thanks to
   
@@ -51,8 +63,11 @@ Thanks to
 Other contributors:
 [Gilmore Davidson][8]
 
+[jstimezonedetect]: https://bitbucket.org/pellepim/jstimezonedetect
+[CDN]: https://cdnjs.com/libraries/jstimezonedetect
+[Moment Timezone]: http://momentjs.com/timezone/
+
 [1]: http://www.iana.org/time-zones
-[2]: http://pellepim.bitbucket.org/jstz/
 [3]: https://bitbucket.org/pellepim/jstimezonedetect/src
 [4]: https://github.com/gruntjs/grunt
 [5]: http://www.onlineaspect.com/about/
@@ -60,5 +75,4 @@ Other contributors:
 [7]: https://bitbucket.org/purebill
 [8]: https://bitbucket.org/gdavidson
 [9]: https://github.com/JordanMagnuson
-[10]: http://cdnjs.com
 [11]: https://bitbucket.org/mj1856
