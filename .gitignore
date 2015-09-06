@@ -1,3 +1,4 @@
 .hg
 .hgignore
 .hgtags
+node_modules
