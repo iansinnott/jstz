@@ -34,7 +34,7 @@ timezone.name(); // => 'America/Los_Angeles' (or whatever your user's timezone i
 
 ```html
 <!doctype html>
-<script src='https://cdnjs.com/libraries/jstimezonedetect'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'></script>
 <script>
   var jstz = require('jstz');
   var timezone = jstz.determine();
