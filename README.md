@@ -19,6 +19,12 @@ Dealing with timezones can be a pain. Libraries like [Moment Timezone][] help a 
 
 ## Usage
 
+```
+$ npm install --save jstz
+```
+
+In your JS file:
+
 ```js
 import jstz from 'jstz';
 const timezone = jstz.determine();
