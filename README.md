@@ -1,5 +1,8 @@
 # JSTZ
 
+[![Circle CI](https://img.shields.io/circleci/project/iansinnott/jstz.svg)](https://circleci.com/gh/iansinnott/jstz)
+[![JSTZ on NPM](https://img.shields.io/npm/v/jstz.svg)](https://www.npmjs.com/package/jstz)
+
 Timezone detection for JavaScript
 
 ## What
