@@ -3,7 +3,7 @@
  * This script gives you the zone info key representing your device's time zone setting.
  *
  * @name jsTimezoneDetect
- * @version 1.0.5
+ * @version 1.0.6
  * @author Jon Nylander
  * @license MIT License - https://bitbucket.org/pellepim/jstimezonedetect/src/default/LICENCE.txt
  *
@@ -30,9 +30,10 @@ var jstz = (function () {
             MAX_SCORE: 864000000, // 10 days
             AMBIGUITIES: {
                 'America/Denver':       ['America/Mazatlan'],
+                'Europe/London':        ['Africa/Casablanca'],
                 'America/Chicago':      ['America/Mexico_City'],
-                'America/Santiago':     ['America/Asuncion', 'America/Campo_Grande'],
-                'America/Montevideo':   ['America/Sao_Paulo'],
+                'America/Asuncion':     ['America/Campo_Grande', 'America/Santiago'],
+                'America/Montevideo':   ['America/Sao_Paulo', 'America/Santiago'],
                 // Europe/Minsk should not be in this list... but Windows.
                 'Asia/Beirut':          ['Asia/Amman', 'Asia/Jerusalem', 'Europe/Helsinki', 'Asia/Damascus', 'Africa/Cairo', 'Asia/Gaza', 'Europe/Minsk'],
                 'Pacific/Auckland':     ['Pacific/Fiji'],
@@ -99,14 +100,18 @@ var jstz = (function () {
          * environments that support the ECMAScript Internationalization API.
          */
         get_from_internationalization_api = function get_from_internationalization_api() {
+            var format, timezone;
             if (typeof Intl === "undefined" || typeof Intl.DateTimeFormat === "undefined") {
                 return;
             }
-            var format = Intl.DateTimeFormat();
+            format = Intl.DateTimeFormat();
             if (typeof format === "undefined" || typeof format.resolvedOptions === "undefined") {
                 return;
             }
-            return format.resolvedOptions().timeZone;
+            timezone = format.resolvedOptions().timeZone;
+            if (timezone && (timezone.indexOf("/") > -1 || timezone === 'UTC')) {
+                return timezone;
+            }
         },
 
         /**
@@ -317,8 +322,10 @@ var jstz = (function () {
 
             for (var tz in scoreboard) {
                 if (scoreboard.hasOwnProperty(tz)) {
-                    if (ambiguities.indexOf(tz) != -1) {
+                    for (var j = 0; j < ambiguities.length; j++) {
+                        if (ambiguities[j] === tz) {
                         return tz;
+                        }
                     }
                 }
             }
@@ -434,7 +441,7 @@ jstz.olson.timezones = {
     '-270,0': 'America/Caracas',
     '-240,1': 'America/Halifax',
     '-240,0': 'America/Santo_Domingo',
-    '-240,1,s': 'America/Santiago',
+    '-240,1,s': 'America/Asuncion',
     '-210,1': 'America/St_Johns',
     '-180,1': 'America/Godthab',
     '-180,0': 'America/Argentina/Buenos_Aires',

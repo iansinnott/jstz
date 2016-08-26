@@ -1,1 +1,1 @@
-module.exports = require('./dist/jstz.js').jstz;
+module.exports = require('./dist/jstz.js');
