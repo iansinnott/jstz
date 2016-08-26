@@ -3,7 +3,7 @@
  * This script gives you the zone info key representing your device's time zone setting.
  *
  * @name jsTimezoneDetect
- * @version 1.0.5
+ * @version 1.0.6
  * @author Jon Nylander
  * @license MIT License - https://bitbucket.org/pellepim/jstimezonedetect/src/default/LICENCE.txt
  *
@@ -30,9 +30,10 @@ var jstz = (function () {
             MAX_SCORE: 864000000, // 10 days
             AMBIGUITIES: {
                 'America/Denver':       ['America/Mazatlan'],
+                'Europe/London':        ['Africa/Casablanca'],
                 'America/Chicago':      ['America/Mexico_City'],
-                'America/Santiago':     ['America/Asuncion', 'America/Campo_Grande'],
-                'America/Montevideo':   ['America/Sao_Paulo'],
+                'America/Asuncion':     ['America/Campo_Grande', 'America/Santiago'],
+                'America/Montevideo':   ['America/Sao_Paulo', 'America/Santiago'],
                 // Europe/Minsk should not be in this list... but Windows.
                 'Asia/Beirut':          ['Asia/Amman', 'Asia/Jerusalem', 'Europe/Helsinki', 'Asia/Damascus', 'Africa/Cairo', 'Asia/Gaza', 'Europe/Minsk'],
                 'Pacific/Auckland':     ['Pacific/Fiji'],
@@ -99,14 +100,18 @@ var jstz = (function () {
          * environments that support the ECMAScript Internationalization API.
          */
         get_from_internationalization_api = function get_from_internationalization_api() {
+            var format, timezone;
             if (typeof Intl === "undefined" || typeof Intl.DateTimeFormat === "undefined") {
                 return;
             }
-            var format = Intl.DateTimeFormat();
+            format = Intl.DateTimeFormat();
             if (typeof format === "undefined" || typeof format.resolvedOptions === "undefined") {
                 return;
             }
-            return format.resolvedOptions().timeZone;
+            timezone = format.resolvedOptions().timeZone;
+            if (timezone && (timezone.indexOf("/") > -1 || timezone === 'UTC')) {
+                return timezone;
+            }
         },
 
         /**
@@ -317,8 +322,10 @@ var jstz = (function () {
 
             for (var tz in scoreboard) {
                 if (scoreboard.hasOwnProperty(tz)) {
-                    if (ambiguities.indexOf(tz) != -1) {
+                    for (var j = 0; j < ambiguities.length; j++) {
+                        if (ambiguities[j] === tz) {
                         return tz;
+                        }
                     }
                 }
             }
@@ -434,7 +441,7 @@ jstz.olson.timezones = {
     '-270,0': 'America/Caracas',
     '-240,1': 'America/Halifax',
     '-240,0': 'America/Santo_Domingo',
-    '-240,1,s': 'America/Santiago',
+    '-240,1,s': 'America/Asuncion',
     '-210,1': 'America/St_Johns',
     '-180,1': 'America/Godthab',
     '-180,0': 'America/Argentina/Buenos_Aires',
@@ -488,7 +495,7 @@ jstz.olson.timezones = {
     '840,0': 'Pacific/Kiritimati'
 };
 
-/* Build time: 2014-11-28 11:10:50Z Build by invoking python utilities/dst.py generate */
+/* Build time: 2015-11-02 13:01:00Z Build by invoking python utilities/dst.py generate */
 jstz.olson.dst_rules = {
     "years": [
         2008,
@@ -521,6 +528,39 @@ jstz.olson.dst_rules = {
                 {
                     "e": 1411678800000,
                     "s": 1406844000000
+                }
+            ]
+        },
+        {
+            "name": "Africa/Casablanca",
+            "rules": [
+                {
+                    "e": 1220223600000,
+                    "s": 1212278400000
+                },
+                {
+                    "e": 1250809200000,
+                    "s": 1243814400000
+                },
+                {
+                    "e": 1281222000000,
+                    "s": 1272758400000
+                },
+                {
+                    "e": 1312066800000,
+                    "s": 1301788800000
+                },
+                {
+                    "e": 1348970400000,
+                    "s": 1345428000000
+                },
+                {
+                    "e": 1382839200000,
+                    "s": 1376100000000
+                },
+                {
+                    "e": 1414288800000,
+                    "s": 1406944800000
                 }
             ]
         },
@@ -789,6 +829,39 @@ jstz.olson.dst_rules = {
             ]
         },
         {
+            "name": "America/Santiago",
+            "rules": [
+                {
+                    "e": 1206846000000,
+                    "s": 1223784000000
+                },
+                {
+                    "e": 1237086000000,
+                    "s": 1255233600000
+                },
+                {
+                    "e": 1270350000000,
+                    "s": 1286683200000
+                },
+                {
+                    "e": 1304823600000,
+                    "s": 1313899200000
+                },
+                {
+                    "e": 1335668400000,
+                    "s": 1346558400000
+                },
+                {
+                    "e": 1367118000000,
+                    "s": 1378612800000
+                },
+                {
+                    "e": 1398567600000,
+                    "s": 1410062400000
+                }
+            ]
+        },
+        {
             "name": "America/Sao_Paulo",
             "rules": [
                 {
@@ -921,7 +994,7 @@ jstz.olson.dst_rules = {
                     "s": 1364508000000
                 },
                 {
-                    "e": 1411678800000,
+                    "e": 1414098000000,
                     "s": 1395957600000
                 }
             ]
@@ -1303,11 +1376,53 @@ jstz.olson.dst_rules = {
                     "s": 1414850400000
                 }
             ]
+        },
+        {
+            "name": "Europe/London",
+            "rules": [
+                {
+                    "e": 1224982800000,
+                    "s": 1206838800000
+                },
+                {
+                    "e": 1256432400000,
+                    "s": 1238288400000
+                },
+                {
+                    "e": 1288486800000,
+                    "s": 1269738000000
+                },
+                {
+                    "e": 1319936400000,
+                    "s": 1301187600000
+                },
+                {
+                    "e": 1351386000000,
+                    "s": 1332637200000
+                },
+                {
+                    "e": 1382835600000,
+                    "s": 1364691600000
+                },
+                {
+                    "e": 1414285200000,
+                    "s": 1396141200000
+                }
+            ]
         }
     ]
-};    if (typeof exports !== 'undefined') {
-        exports.jstz = jstz;
+};
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = jstz;
+} else if ((typeof define !== 'undefined' && define !== null) && (define.amd != null)) {
+    define([], function() {
+        return jstz;
+    });
+} else {
+    if (typeof root === 'undefined') {
+        window.jstz = jstz;
     } else {
         root.jstz = jstz;
     }
-})(this);
+}
+}());

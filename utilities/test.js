@@ -11,7 +11,7 @@
  *
  * @type {exports.jstz|*}
  */
-var jstz = require("../dist/jstz").jstz;
+var jstz = require("../dist/jstz.js");
 
 var expected_tz = process.argv[2];
 var actual_tz = null;

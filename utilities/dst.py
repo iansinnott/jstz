@@ -8,20 +8,20 @@ import sys
 from datetime import datetime
 import os
 
-AMBIGUOUS_DST_ZONES = ['Africa/Cairo', 'America/Asuncion', 'America/Campo_Grande', 'America/Goose_Bay',
+AMBIGUOUS_DST_ZONES = ['Africa/Cairo', 'Africa/Casablanca', 'America/Asuncion', 'America/Campo_Grande', 'America/Goose_Bay',
                        'America/Havana', 'America/Mazatlan', 'America/Mexico_City', 'America/Miquelon',
-                       'America/Santa_Isabel', 'America/Sao_Paulo', 'Asia/Amman', 'Asia/Damascus',
+                       'America/Santa_Isabel', 'America/Santiago', 'America/Sao_Paulo', 'Asia/Amman', 'Asia/Damascus',
                        'Asia/Dubai', 'Asia/Gaza', 'Asia/Irkutsk', 'Asia/Jerusalem', 'Asia/Kamchatka',
                        'Asia/Krasnoyarsk', 'Asia/Omsk', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg',
                        'Asia/Yerevan', 'Australia/Lord_Howe', 'Australia/Perth', 'Europe/Helsinki',
-                       'Europe/Minsk', 'Europe/Moscow', 'Pacific/Apia', 'Pacific/Fiji']
+                       'Europe/Minsk', 'Europe/Moscow', 'Pacific/Apia', 'Pacific/Fiji', 'Europe/London']
 
 OTHER_DST_ZONES = ['Africa/Johannesburg', 'Africa/Windhoek', 'America/Adak', 'America/Anchorage', 'America/Chicago',
                    'America/Denver', 'America/Godthab', 'America/Halifax', 'America/Los_Angeles', 'America/Montevideo',
-                   'America/New_York', 'America/Noronha', 'America/Santiago', 'America/St_Johns', 'Asia/Baghdad',
+                   'America/New_York', 'America/Noronha', 'America/St_Johns', 'Asia/Baghdad',
                    'Asia/Baku', 'Asia/Beirut', 'Asia/Dhaka', 'Asia/Jakarta', 'Asia/Karachi', 'Asia/Shanghai',
                    'Asia/Tehran', 'Asia/Tokyo', 'Atlantic/Azores', 'Australia/Adelaide', 'Australia/Brisbane',
-                   'Australia/Sydney', 'Europe/Berlin', 'Europe/London', 'Pacific/Auckland', 'Pacific/Chatham',
+                   'Australia/Sydney', 'Europe/Berlin', 'Pacific/Auckland', 'Pacific/Chatham',
                    'Pacific/Majuro', 'Pacific/Noumea', 'Pacific/Tongatapu']
 
 OTHER_TIMEZONES = ['America/Guatemala', 'Pacific/Pitcairn', 'Asia/Kolkata', 'Pacific/Kiritimati',
@@ -34,7 +34,7 @@ OTHER_TIMEZONES = ['America/Guatemala', 'Pacific/Pitcairn', 'Asia/Kolkata', 'Pac
 OLSON_TO_WIN32_MAPPING = {
     'Etc/GMT+12': 'Dateline Standard Time',
     'Pacific/Pago_Pago': 'UTC-11',
-    'Pacific Honolulu': 'Hawaiian Standard Time',
+    'Pacific/Honolulu': 'Hawaiian Standard Time',
     'America/Anchorage': 'Alaskan Standard Time',
     'America/Santa_Isabel': 'Pacific Standard Time (Mexico)',
     'America/Los_Angeles': 'Pacific Standard Time',
@@ -101,11 +101,10 @@ OLSON_TO_WIN32_MAPPING = {
 YEARS = range(2008, 2015)
 
 
-
-
 def set_windows_timezone(timezone):
     windows_tz = OLSON_TO_WIN32_MAPPING[timezone]
     subprocess.call(['tzutil', '/s', windows_tz])
+
 
 def generate_rules():
     rules = {'years': YEARS}
