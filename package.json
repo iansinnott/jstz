@@ -4,7 +4,11 @@
   "main": "index.js",
   "description": "Timezone detection for JavaScript",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha",
+    "bump:patch": "npm version patch -m \"v%s\"",
+    "bump:minor": "npm version minor -m \"v%s\"",
+    "bump:major": "npm version major -m \"v%s\"",
+    "bump": "npm run bump:patch"
   },
   "author": {
     "name": "Ian Sinnott",
