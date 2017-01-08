@@ -47,5 +47,7 @@
     "gulp-uglify": "^1.0.1",
     "gulp-wrap-commonjs": "^0.1.12",
     "mocha": "^2.3.0"
-  }
+  },
+  "typings": "./dist/jstz.d.ts",
+  "types": "./dist/jstz.d.ts"
 }
