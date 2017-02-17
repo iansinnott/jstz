@@ -1,6 +1,6 @@
 declare namespace jstz {
     class TimeZone {
-        name();
+        name():string;
     }
     function determine(): TimeZone;
 }
