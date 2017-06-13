@@ -59,6 +59,53 @@ To learn more about the library head on over to the original libraries website: 
 
 <http://pellepim.bitbucket.org/jstz/>
 
+## Use With Rails
+
+`jstz` is an excellent library to use by Rails to determine the time zone of the browser (e.g. the gem [browser-timezone-rails](https://github.com/kbaum/browser-timezone-rails)), but some extra tweaking is necessary to make them play nicely together. 
+
+A common use case is to provide a time zone select (`f.time_zone_select`) where it defaults to the user's current time zone. That Rails helper uses `ActiveSupport::TimeZone`, which provides a more human-readable subset of the time zones (e.g. `Eastern Time (US & Canada)` instead of `America/New_York`). `jstz` doesn't know about this subset, so we need to use the `TZInfo` associated with those `ActiveSupport::TimeZone`s to have a correct translation.
+
+This method could go on your base application controller, assuming you're setting a browser cookie `browser_time_zone`:
+
+```ruby
+# Returns the client's time zone based on a cookie set by the browser, defaults to application time zone
+def browser_time_zone
+  browser_tz = ActiveSupport::TimeZone.find_tzinfo(cookies['browser_time_zone'])
+  ActiveSupport::TimeZone.all.find { |zone| zone.tzinfo == browser_tz } || Time.zone
+rescue TZInfo::UnknownTimezone, TZInfo::InvalidTimezoneIdentifier
+  Time.zone
+end
+```
+
+Then in the view you could do something like:
+
+```erb
+<%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones,
+                       default: browser_time_zone.name %>
+```
+
+Further complicating matters, `jstz` uses the forward-thinking `window.Intl`, which has an awareness of time zones other than what is in Rails, so time zones such as `America/Montreal` from `Intl` will not be found in Rails. If you're using `jstz` with Rails, you will want to tempoarily "silence" the use of `Intl` when reading from `jstz`. Here's a code snippet:
+
+```js
+export function findTimeZone() {
+  // Because Intl is considered read-only and enforced on Android Chrome, we use Object.defineProperty to get around
+  const oldIntl = window.Intl
+  Object.defineProperty(window, 'Intl', {
+    get() {},
+  })
+
+  // get the timezone...
+  const tz = jstz.determine().name()
+
+  // return Intl to original functionality
+  Object.defineProperty(window, 'Intl', {
+    get() { return oldIntl },
+  })
+
+  return tz
+}
+```
+
 ## Credits (from the original README.md)
 
 Thanks to
