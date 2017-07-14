@@ -88,21 +88,16 @@ Further complicating matters, `jstz` uses the forward-thinking `window.Intl`, wh
 
 ```js
 export function findTimeZone() {
-  // Because Intl is considered read-only and enforced on Android Chrome, we use Object.defineProperty to get around
   const oldIntl = window.Intl
-  Object.defineProperty(window, 'Intl', {
-    get() {},
-  })
-
-  // get the timezone...
-  const tz = jstz.determine().name()
-
-  // return Intl to original functionality
-  Object.defineProperty(window, 'Intl', {
-    get() { return oldIntl },
-  })
-
-  return tz
+  try {
+    window.Intl = undefined
+    const tz = jstz.determine().name()
+    window.Intl = oldIntl
+    return tz
+  } catch (e) {
+    // sometimes (on android) you can't override intl
+    return jstz.determine().name()
+  }
 }
 ```
 
