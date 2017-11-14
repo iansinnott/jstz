@@ -53,15 +53,11 @@ timezone.name(); // => 'America/Los_Angeles' (or whatever your user's timezone i
 
 ## Docs
 
-To learn more about the library head on over to the original libraries website: <http://pellepim.bitbucket.org/jstz/>
-
-## Demo
-
-<http://pellepim.bitbucket.org/jstz/>
+To learn more about the library head on over to the original library's repo: <https://bitbucket.org/pellepim/jstimezonedetect>
 
 ## Use With Rails
 
-`jstz` is an excellent library to use by Rails to determine the time zone of the browser (e.g. the gem [browser-timezone-rails](https://github.com/kbaum/browser-timezone-rails)), but some extra tweaking is necessary to make them play nicely together. 
+`jstz` is an excellent library to use by Rails to determine the time zone of the browser (e.g. the gem [browser-timezone-rails](https://github.com/kbaum/browser-timezone-rails)), but some extra tweaking is necessary to make them play nicely together.
 
 A common use case is to provide a time zone select (`f.time_zone_select`) where it defaults to the user's current time zone. That Rails helper uses `ActiveSupport::TimeZone`, which provides a more human-readable subset of the time zones (e.g. `Eastern Time (US & Canada)` instead of `America/New_York`). `jstz` doesn't know about this subset, so we need to use the `TZInfo` associated with those `ActiveSupport::TimeZone`s to have a correct translation.
 
@@ -104,7 +100,7 @@ export function findTimeZone() {
 ## Credits (from the original README.md)
 
 Thanks to
-  
+
   - [Josh Fraser][5] for the original idea
   - [Brian Donovan][6] for making jstz CommonJS compliant
   - [Ilya Sedlovsky][7] for help with namespacing
