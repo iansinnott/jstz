@@ -66,7 +66,7 @@ This method could go on your base application controller, assuming you're settin
 ```ruby
 # Returns the client's time zone based on a cookie set by the browser, defaults to application time zone
 def browser_time_zone
-  browser_tz = ActiveSupport::TimeZone.find_tzinfo(cookies['browser_time_zone'])
+  browser_tz = ActiveSupport::TimeZone.find_tzinfo(cookies[:browser_time_zone])
   ActiveSupport::TimeZone.all.find { |zone| zone.tzinfo == browser_tz } || Time.zone
 rescue TZInfo::UnknownTimezone, TZInfo::InvalidTimezoneIdentifier
   Time.zone
