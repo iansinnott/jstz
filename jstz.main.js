@@ -394,6 +394,14 @@ var jstz = (function () {
             return {
                 name: function () {
                     return preliminary_tz;
+                },
+                stdTimezoneOffset : function () {
+                    // negative to match what (new Date).getTimezoneOffset() will return
+                    return -lookup_key().split(',')[0]
+                },
+                timezoneOffset : function () {
+                    // negative to match what (new Date).getTimezoneOffset() will return
+                    return -get_date_offset(new Date)
                 }
             };
         };
