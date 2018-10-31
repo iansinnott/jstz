@@ -20,7 +20,6 @@ describe('API', function() {
     expect(timezone).to.respondTo('stdTimezoneOffset');
     expect(timezone.stdTimezoneOffset()).to.be.a('number');
   });
-  
   it('Timezone instance has a timezoneOffset method that returns a number', function() {
     var timezone = jstz.determine();
     expect(timezone).to.respondTo('timezoneOffset');
