@@ -4,6 +4,8 @@
   "main": "index.js",
   "description": "Timezone detection for JavaScript",
   "scripts": {
+    "build": "gulp build",
+    "pretest": "npm run build",
     "test": "./node_modules/.bin/mocha",
     "bump:patch": "npm version patch -m \"v%s\"",
     "bump:minor": "npm version minor -m \"v%s\"",
