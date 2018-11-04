@@ -109,7 +109,7 @@ var jstz = (function () {
                 return;
             }
             timezone = format.resolvedOptions().timeZone;
-            if (timezone && (timezone.indexOf("/") > -1 || timezone === 'UTC')) {
+            if (timezone && (timezone.indexOf("/") > -1 || timezone === 'UTC') && timezone.indexOf("Etc") != 0) {
                 return timezone;
             }
         },
@@ -394,6 +394,14 @@ var jstz = (function () {
             return {
                 name: function () {
                     return preliminary_tz;
+                },
+                stdTimezoneOffset : function () {
+                    // negative to match what (new Date).getTimezoneOffset() will return
+                    return -lookup_key().split(',')[0]
+                },
+                timezoneOffset : function () {
+                    // negative to match what (new Date).getTimezoneOffset() will return
+                    return -get_date_offset(new Date)
                 }
             };
         };
