@@ -7,9 +7,9 @@
     "build": "gulp build",
     "pretest": "npm run build",
     "test": "./node_modules/.bin/mocha",
-    "bump:patch": "npm version patch -m \"v%s\"",
-    "bump:minor": "npm version minor -m \"v%s\"",
-    "bump:major": "npm version major -m \"v%s\"",
+    "bump:patch": "npm run build && npm version patch -m \"v%s\"",
+    "bump:minor": "npm run build && npm version minor -m \"v%s\"",
+    "bump:major": "npm run build && npm version major -m \"v%s\"",
     "bump": "npm run bump:patch"
   },
   "author": {
