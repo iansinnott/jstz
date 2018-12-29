@@ -98,7 +98,7 @@ OLSON_TO_WIN32_MAPPING = {
     'Pacific/Kiritimati': 'Line Islands Standard Time'
 }
 
-YEARS = range(2008, 2015)
+YEARS = range(2014, 2019)
 
 
 def set_windows_timezone(timezone):
@@ -124,12 +124,20 @@ def generate_rules():
     rules_json = json.dumps(rules, sort_keys=True, indent=4, separators=(',', ': '))
 
     rules_js = """/* Build time: %s Build by invoking python utilities/dst.py generate */
-jstz.olson.dst_rules = %s;""" % (datetime.utcnow().strftime('%Y-%m-%d %H:%M:%SZ'), rules_json)
+export default %s;""" % (datetime.utcnow().strftime('%Y-%m-%d %H:%M:%SZ'), rules_json)
 
-    with open('../jstz.rules.js', 'w') as rulefile:
+    with open('../src/jstz.rules.js', 'w') as rulefile:
         rulefile.write(rules_js)
 
-    print "Written to ../jstz.rules.js"
+    print "Written to ../src/jstz.rules.js"
+
+    print "\nGenerating timezones for mocha tests"
+    timezone_json = json.dumps(AMBIGUOUS_DST_ZONES + OTHER_DST_ZONES + OTHER_TIMEZONES, sort_keys=True, indent=4, separators=(',', ': '))
+    timezone_js = "module.exports = %s" % (timezone_json)
+    with open('../test/utils/timezones.js', 'w') as timezonefile:
+        timezonefile.write(timezone_js)
+    
+    print "Written to ../test/utils/timezones.js"
 
 
 def test(include_success=False):

@@ -1,1 +1,1 @@
-module.exports = require('./dist/jstz.js');
+module.exports = require('./dist/jstz.min.js');
